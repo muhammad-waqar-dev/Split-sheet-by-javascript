@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+ 
+<html>
+ <head>
+ <title>JavaScript Sprite Animation Tutorial</title>
+ </head>
+ <body>
+ 
+ <canvas id='canvas'></canvas><br />
+ <button onclick='moveLeft()'>Left</button>
+ <button onclick='moveRight()'>Right</button>
+ <script>
+ var canvasWidth = 1300; 
+ var canvasHeight = 350;
+ 
+ var spriteWidth = 864; 
+ var spriteHeight = 280; 
+ 
+ var rows = 2; 
+ var cols = 8; 
+ 
+ var trackRight = 0; 
+ var trackLeft = 1; 
+ 
+ var width = spriteWidth/cols; 
+ var height = spriteHeight/rows; 
+ 
+ var curFrame = 0; 
+ var frameCount = 8; 
+ 
+ var x=0;
+ var y=200; 
+ 
+ var srcX; 
+ var srcY; 
+ 
+ var left = false; 
+ var right = true;
+ 
+ var speed = 15; 
+ 
+ var canvas = document.getElementById('canvas');
+ canvas.width = canvasWidth;
+ canvas.height = canvasHeight; 
+ 
+ var ctx = canvas.getContext("2d");
+ 
+ var character = new Image(); 
+ character.src = "character.png";
+ 
+ function updateFrame(){
+    curFrame = ++curFrame % frameCount; 
+ 
+ //Calculating the x coordinate for spritesheet 
+ srcX = curFrame * width; 
+ 
+ //Clearing the drawn frame 
+ ctx.clearRect(x,y,width,height);
+ 
+ 
+ //if left is true and the character has not reached the left edge 
+ if(left && x>0){
+ //calculate srcY 
+ srcY = trackLeft * height; 
+ //decreasing the x coordinate
+ x-=speed; 
+ }
+ 
+ //if the right is true and character has not reached right edge 
+ if(right && x<canvasWidth-width){
+ //calculating y coordinate for spritesheet
+ srcY = trackRight * height; 
+ //increasing the x coordinate 
+ x+=speed; 
+ }
+ 
+ }
+ 
+ function draw(){
+ updateFrame();
+ ctx.drawImage(character,srcX,srcY,width,height,x,y,width,height);
+ }
+ 
+ 
+ function moveLeft(){
+ left = true; 
+ right = false; 
+ }
+ 
+ function moveRight(){
+ left = false;
+ right = true; 
+ }
+ 
+ setInterval(draw,100);
+ 
+ </script>
+ </body>
+</html>
